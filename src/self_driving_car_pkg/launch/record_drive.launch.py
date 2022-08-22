@@ -7,7 +7,7 @@ def generate_launch_description():
   return LaunchDescription([
 
         Node(
-                package='prius_sdc_pkg',
+                package='self_driving_car_pkg',
                 executable='recorder_node',
                 name='video_recorder',
                 output='screen'),

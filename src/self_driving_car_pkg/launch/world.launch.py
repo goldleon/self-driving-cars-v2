@@ -17,7 +17,7 @@ def generate_launch_description():
 
 
         Node(
-            package='prius_sdc_pkg',
+            package='self_driving_car_pkg',
             executable='lights_spawner.bash',
             name='Traffic_Signals',
             output='screen'
