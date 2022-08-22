@@ -23,6 +23,7 @@
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
+        
         <material>
           <script>
             <uri>model://track/materials/script_road</uri>
@@ -30,6 +31,8 @@
             <name>road/Diffuse</name>
           </script>
         </material>
+
+
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>
       </visual>
