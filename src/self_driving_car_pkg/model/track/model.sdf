@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <sdf version='1.7'>
-  <model name='Sign_board_stand'>
+  <model name='track'>
     <link name='link_0'>
       <inertial>
         <mass>1</mass>
@@ -12,29 +12,23 @@
           <iyz>0</iyz>
           <izz>0.166667</izz>
         </inertia>
-        <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>0.012693 -0.016329 -0.964065 1.57085 0.003717 1.58448</pose>
-      <gravity>1</gravity>
-      <self_collide>0</self_collide>
-      <kinematic>0</kinematic>
-      <enable_wind>0</enable_wind>
+      <pose>-0.011717 0.037477 0 0 -0 0</pose>
+      
       <visual name='visual'>
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://sign_board_30/meshes/sign_stand.obj</uri>
+            <uri>model://track/meshes/complete_circuit.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
         <material>
-          <lighting>1</lighting>
           <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Grey</name>
+            <uri>model://track/materials/script_road</uri>
+            <uri>model://track/materials/textures</uri>
+            <name>road/Diffuse</name>
           </script>
-          <shader type='pixel'/>
-          <emissive>0 0 0 1</emissive>
         </material>
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>
@@ -45,7 +39,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://sign_board_30/meshes/sign_stand.obj</uri>
+            <uri>model://track/meshes/complete_circuit.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -108,21 +102,21 @@
           <izz>0.166667</izz>
         </inertia>
       </inertial>
-      <pose>-0.012694 0.016329 0.964067 3.14159 1.56059 3.14159</pose>
+      <pose>0.011717 -0.037477 0 0 -0 0</pose>
       <visual name='visual'>
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://sign_board_30/meshes/sign_board.obj</uri>
+            <uri>model://track/meshes/chowk.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
 
         <material>
           <script>
-            <uri>model://sign_board_30/materials/scripts</uri>
-            <uri>model://sign_board_30/materials/textures</uri>
-            <name>sign_board_30/Diffuse</name>
+            <uri>model://track/materials/script_chowk</uri>
+            <uri>model://track/materials/textures</uri>
+            <name>chowk/Diffuse</name>
           </script>
         </material>
 
@@ -135,7 +129,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://sign_board_30/meshes/sign_board.obj</uri>
+            <uri>model://track/meshes/chowk.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -186,24 +180,7 @@
         </surface>
       </collision>
     </link>
-    <joint name='stand_board_J' type='fixed'>
-      <parent>link_0</parent>
-      <child>link_1</child>
-      <pose>0 0 0 0 -0 0</pose>
-      <physics>
-        <ode>
-          <limit>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </limit>
-          <suspension>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </suspension>
-        </ode>
-      </physics>
-    </joint>
-    <static>0</static>
+    <static>1</static>
     <allow_auto_disable>1</allow_auto_disable>
   </model>
 </sdf>
