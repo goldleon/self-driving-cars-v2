@@ -27,7 +27,7 @@ setup(
         'console_scripts': [
             'recorder_node = self_driving_car_pkg.video_recorder:main',
             'driver_node = self_driving_car_pkg.driver_node:main',
-            'spawn_node = self_driving_car_pkg.self_driving_spawner:main'
+            'spawner_node = self_driving_car_pkg.self_driving_spawner:main'
         ],
     },
 )
