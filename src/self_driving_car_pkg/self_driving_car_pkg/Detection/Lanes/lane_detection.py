@@ -4,8 +4,8 @@ import cv2
 from ...config import config
 from .colour_segmentation import segment_lanes
 from .midlane_estimation import estimate_midlane
-from cleaning import GetYellowInnerEdge, ExtendShortLane
-from data_extraction import FetchInfoAndDisplay
+from .cleaning import GetYellowInnerEdge, ExtendShortLane
+from .data_extraction import FetchInfoAndDisplay
 
 
 def detect_lanes(img):
