@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 
 
+hls = 0
+src = 0
+
 # White Regions Range
 hue_l = 0
 ligth_l = 225
@@ -16,8 +19,8 @@ saturation_l_y = 0
 
 
 def maskextract():
-    mask = clr_segment(hls, (hue_l, ligth_l, saturation_l), (255, 255, 255))
-    mask_y = clr_segment(
+    mask = color_segment(hls, (hue_l, ligth_l, saturation_l), (255, 255, 255))
+    mask_y = color_segment(
         hls, (hue_l_y, ligth_l_y, saturation_l_y), (hue_h_y, 255, 255)
     )  # combine 6ms
 
@@ -91,7 +94,8 @@ cv2.createTrackbar(
 def color_segment(hls_segment, lower_range, upper_range):
     range_mask = cv2.inRange(hls_segment, lower_range, upper_range)
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
-    return cv2.morphologyEx(range_mask, cv2.MORPH_DILATE, kernel)
+    dilated_mask = cv2.morphologyEx(range_mask, cv2.MORPH_DILATE, kernel)
+    return dilated_mask
 
 
 def segment_lanes(frame, min_area):
