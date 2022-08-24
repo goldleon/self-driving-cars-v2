@@ -148,8 +148,8 @@ def segment_lanes(frame,min_area):
     hls = cv2.cvtColor(frame,cv2.COLOR_BGR2HLS)
 
     # Segmenting White regions
-    white_regions = color_segment(hls,np.array([hue_l,lit_l,sat_l]),np.array([255,255,255]))
-    yellow_regions = color_segment(hls,np.array([hue_l_y,lit_l_y,sat_l_y]),np.array([hue_h_y,255,255]))
+    white_regions = color_segment(hls,np.array([hue_l,ligth_l,saturation_l]),np.array([255,255,255]))
+    yellow_regions = color_segment(hls,np.array([hue_l_y,ligth_l_y,saturation_l_y]),np.array([hue_h_y,255,255]))
 
     cv2.imshow("white_regions",white_regions)
     cv2.imshow("yellow_regions",yellow_regions)
