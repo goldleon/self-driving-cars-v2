@@ -7,10 +7,7 @@
   <maintainer email="bouchtaoui.anass@todo.todo">ubuntu</maintainer>
   <license>TODO: License declaration</license>
 
-  <exec_depend>rclpy</exec_depend>
-  <exec_depend>geometry_msgs</exec_depend>
-  <exec_depend>gazebo_msgs</exec_depend>
-  <exec_depend>sensor_msgs</exec_depend>
+  <depend>rclpy</depend>
 
 
   <test_depend>ament_copyright</test_depend>
