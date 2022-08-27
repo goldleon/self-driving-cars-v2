@@ -6,6 +6,7 @@ from .Detection.Signs.sign_detection import detect_signs
 from .Detection.TrafficLights.trafic_lights_detection import detect_traffic_lights
 from .config import config
 
+
 class Control:
     def __init__(self):
         # Lane assist Variable
@@ -62,7 +63,7 @@ class Control:
                 self.speed = 0
                 print("Stopping Car !!!")
 
-        self.prev_mode = mode #set Current mode
+        self.prev_mode = mode  # set Current mode
 
         max_turn_angle = 90
         max_turn_angle_neg = -90
@@ -76,28 +77,27 @@ class Control:
             car_offset = interp(dist, [-max_sane_dist, max_sane_dist], [-max_turn_angle, max_turn_angle])
             req_turn_angle = car_offset + curve
 
-        #Handle Overflow
+        # Handle Overflow
         if (req_turn_angle > max_turn_angle) or (req_turn_angle < max_turn_angle_neg):
             if req_turn_angle > max_turn_angle:
                 req_turn_angle = max_turn_angle
             else:
                 req_turn_angle = max_turn_angle_neg
 
-        #Handle Max car turn ability
+        # Handle Max car turn ability
         self.angle = interp(req_turn_angle, [max_turn_angle_neg, max_turn_angle], [-45, 45])
         if self.increase_tire_speed_in_turns and (tracked_class != "left_turn"):
-            if self.angle >30:
-                self.speed = interp(self.angle, [30,45],[80,100])
+            if self.angle > 30:
+                self.speed = interp(self.angle, [30, 45], [80, 100])
             elif self.angle < (-30):
-                self.speed = interp(self.angle, [-45, -30], [100,80])
-
+                self.speed = interp(self.angle, [-45, -30], [100, 80])
 
     def obey_left_turn(self, mode):
         self.speed = 50
-        if (self.prev_mode_lt==) and (mode==''):
+        if (self.prev_mode_lt == config.DETECTION) and (mode == config.TRACKING):
             self.prev_mode_lt = config.TRACKING
             self.detected_left_turn = True
-        elif (self.prev_mode_lt==config.TRACKING) and (mode==config.DETECTION):
+        elif (self.prev_mode_lt == config.TRACKING) and (mode == config.DETECTION):
             self.detected_left_turn = False
             self.activate_left_turn = True
 
@@ -117,12 +117,13 @@ class Control:
         if self.activate_left_turn or self.detected_left_turn:
             # Follow previously Saved Route
             self.angle = self.frozen_angle
+
     def obey_traffic_lights(self, traffic_state, proximity_status):
         # Car is close to traffic lights signalling stop
-        if traffic_state=='Stop' and proximity_status:
-            self.speed = 0 #Stropping Car
+        if traffic_state == 'Stop' and proximity_status:
+            self.speed = 0  # Stropping Car
             self.STOP_MODE_ACTIVATED = True
-        elif self.STOP_MODE_ACTIVATED or self.GO_MODE_ACTIVATED: #Car is Navigating over traffic lights
+        elif self.STOP_MODE_ACTIVATED or self.GO_MODE_ACTIVATED:  # Car is Navigating over traffic lights
             # Car stopped at Red and now TL turned green
             if self.STOP_MODE_ACTIVATED and traffic_state == 'Go':
                 self.STOP_MODE_ACTIVATED = False
@@ -133,14 +134,13 @@ class Control:
             # Go mode activated --> the Car moves straight ignoring lane assist for a moment while crossing intersection
             elif self.GO_MODE_ACTIVATED:
                 self.angle = 0.0
-                self.speed = 80 # Default speed
+                self.speed = 80  # Default speed
                 if self.crossing_intersection_timer == 200:
                     self.GO_MODE_ACTIVATED = False
                     print("Intersection Crossed :D")
-                    self.crossing_intersection_timer = 0 #
+                    self.crossing_intersection_timer = 0  #
 
                 self.crossing_intersection_timer += 1
-
 
         pass
 
@@ -150,8 +150,49 @@ class Car:
     def __init__(self):
         self.Control = Control()
 
-    def display_state(self, frame_disp, angle_of_car, current_speed, tracked_class, traffic_state="", close_proximity=False ):
+    def display_state(self, frame_disp, angle_of_car, current_speed, tracked_class, traffic_state="",
+                      close_proximity=False):
+        # Translate [ ROS Car Control Range ===> Real World angle and speed  ]
+        angle_of_car = interp(angle_of_car, [-0.5, 0.5], [45, -45])
+        if current_speed != 0.0:
+            current_speed = interp(current_speed, [1, 2], [30, 90])
+        ###########################################  Displaying CONTROL STATE ####################################
+        if angle_of_car < -10:
+            direction_string = "[ Left ]"
+            color_direction = (120, 0, 255)
+        elif angle_of_car > 10:
+            direction_string = "[ Right ]"
+            color_direction = (120, 0, 255)
+        else:
+            direction_string = "[ Straight ]"
+            color_direction = (0, 255, 0)
 
+        if current_speed > 0:
+            direction_string = "Moving --> " + direction_string
+        else:
+            color_direction = (0, 0, 255)
+
+        cv2.putText(frame_disp, str(direction_string), (20, 40), cv2.FONT_HERSHEY_DUPLEX, 0.4, color_direction, 1)
+
+        angle_speed_str = "[ Angle ,Speed ] = [ " + str(int(angle_of_car)) + "deg ," + str(int(current_speed)) + "kmh ]"
+        cv2.putText(frame_disp, str(angle_speed_str), (20, 20), cv2.FONT_HERSHEY_DUPLEX, 0.4, (0, 0, 255), 1)
+
+        if tracked_class == "left_turn":
+            font_scale = 0.32
+            if self.Control.detected_left_turn:
+                tracked_class = tracked_class + " : Detected { True } "
+            else:
+                tracked_class = tracked_class + " : Activated { " + str(self.Control.activate_left_turn) + " } "
+        else:
+            font_scale = 0.37
+        cv2.putText(frame_disp, "Sign Detected ==> " + str(tracked_class), (20, 80), cv2.FONT_HERSHEY_COMPLEX,
+                    font_scale, (0, 255, 255), 1)
+
+        if traffic_state != "":
+            cv2.putText(frame_disp, "Traffic Light State = [ " + traffic_state + " ] ", (20, 60),
+                        cv2.FONT_HERSHEY_COMPLEX, 0.35, 255)
+            if close_proximity:
+                cv2.putText(frame_disp, " (P.Warning!) ", (220, 75), cv2.FONT_HERSHEY_COMPLEX, 0.35, (0, 0, 255))
 
     def drive_car(self, frame):
         img = frame[0:640, 238:1042]
@@ -163,11 +204,9 @@ class Car:
         # ================================ [ Detection ] ============================================
         distance, curvature = detect_lanes(img)
 
-        traffic_state, proximity_status = detect_traffic_lights(img_orig.copy(), img)
+        traffic_state, proximity_status = detect_traffic_lights(original_img.copy(), img)
 
-        mode, tracked_class = detect_signs(img_orig, img)
-
-        distance, curvature = detect_lanes(img)
+        mode, tracked_class = detect_signs(original_img, img)
 
         # ========================= [ Updating Current State ] =======================================
         current_state = [distance, curvature, img, mode, tracked_class, traffic_state, proximity_status]
