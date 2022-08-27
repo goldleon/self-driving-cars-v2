@@ -204,17 +204,17 @@ class Car:
         # ================================ [ Detection ] ============================================
         distance, curvature = detect_lanes(img)
 
-        traffic_state, proximity_status = detect_traffic_lights(original_img.copy(), img)
+        #traffic_state, proximity_status = detect_traffic_lights(original_img.copy(), img)
 
-        mode, tracked_class = detect_signs(original_img, img)
+        #mode, tracked_class = detect_signs(original_img, img)
 
         # ========================= [ Updating Current State ] =======================================
-        current_state = [distance, curvature, img, mode, tracked_class, traffic_state, proximity_status]
+        current_state = [distance, curvature, img]
 
         # ================================= [ Control ] ============================================
         angle_m, speed_m = self.Control.drive(current_state)
 
         # ================================= [ Display ] ============================================
-        self.display_state(img, angle_m, speed_m, tracked_class, traffic_state, proximity_status)
+        self.display_state(img, angle_m, speed_m)
 
         return angle_m, speed_m, img
