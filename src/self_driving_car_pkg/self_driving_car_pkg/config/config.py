@@ -25,9 +25,8 @@ debugging_TL_Config = True
 Detect_lane_N_Draw = True
 Training_CNN = False
 
-vid_path = os.path.abspath("data/vids/Ros2/lane.avi")
+vid_path = os.path.abspath("data/videos/Ros2/lane.avi")
 loopCount = 0
-
 
 Resized_width = 320  # 320#240#640#320 # Control Parameter
 Resized_height = 240  # 240#180#480#240
@@ -66,3 +65,8 @@ MaxDist_resized = int(Resized_height * BWContourOpen_speed_MaxDist_per)
 
 CropHeight = 630  # Required in Camera mounted on top of car 640p
 CropHeight_resized = int((CropHeight / Ref_imgHeight) * Resized_height)
+
+# ============================================ CONSTANTS =======================================
+UNKNOWN = 'UNKNOWN'
+DETECTION = 'DETECTION'
+TRACKING = 'TRACKING'
