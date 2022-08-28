@@ -331,7 +331,6 @@ class TrafficLightsTracker(Tracker):
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         p1, st, _ = cv2.calcOpticalFlowPyrLK(self.old_gray, gray, self.p0, None, **self.lk_params)
-        cv2.
 
         # 5a. If no flow, look for new points
         if (p1 is None) or (len(p1[st == 1]) < 3):
