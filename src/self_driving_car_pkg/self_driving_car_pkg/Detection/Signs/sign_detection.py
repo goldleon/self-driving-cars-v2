@@ -125,7 +125,7 @@ def detect_signs(frame, frame_draw):
         # 1. Load CNN model
         global model
         model = load_model(
-            os.path.join(os.getcwd(), "self_driving_car_pkg/self_driving_car_pkg/data/saved_model_5_Sign.h5"),
+            os.path.join(os.getcwd(), "src/self_driving_car_pkg/self_driving_car_pkg/data/saved_model_5_Sign.h5"),
             compile=False)
         # summarize model.
         model.summary()

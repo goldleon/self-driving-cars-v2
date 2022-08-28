@@ -12,7 +12,7 @@ from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
 
 
-class Video_get(Node):
+class VideoGet(Node):
     def __init__(self):
         super().__init__("video_subscriber")  # node name
         ## Created a subscriber
@@ -37,7 +37,7 @@ class Video_get(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    image_subscriber = Video_get()
+    image_subscriber = VideoGet()
     rclpy.spin(image_subscriber)
     rclpy.shutdown()
 

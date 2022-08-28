@@ -204,7 +204,7 @@ class Car:
         # ================================ [ Detection ] ============================================
         distance, curvature = detect_lanes(img)
 
-        #traffic_state, proximity_status = detect_traffic_lights(original_img.copy(), img)
+        traffic_state, proximity_status = detect_traffic_lights(original_img.copy(), img)
 
         mode, tracked_class = detect_signs(original_img, img)
 
