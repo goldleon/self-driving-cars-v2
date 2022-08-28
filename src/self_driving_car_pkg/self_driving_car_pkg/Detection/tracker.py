@@ -15,7 +15,7 @@ class Tracker:
         self.known_centers_confidence = []
         self.known_centers_classes_confidence = []
         # Init Variables
-        self.old_gray = 0
+        self.old_gray = np.zeros((320, 240), 'uint8')
         self.p0 = []
         # Draw Variables
         self.mask = 0
