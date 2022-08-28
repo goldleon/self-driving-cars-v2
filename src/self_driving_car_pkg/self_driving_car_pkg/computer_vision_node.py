@@ -8,7 +8,7 @@ import rclpy
 from .Drive_Bot import Car
 
 
-class Video_feed_in(Node):
+class VideoFeedIn(Node):
     def __init__(self):
 
         super().__init__("video_subscriber")
@@ -29,8 +29,8 @@ class Video_feed_in(Node):
     def process_data(self, data):
 
         frame = self.bridge.imgmsg_to_cv2(data, "bgr8")  # performing conversion
-        self.Car.drive_car(frame)
-        angle, speed, img = 0.0, 0.0, frame
+
+        angle, speed, img = self.Car.drive_car(frame)
 
         self.velocity.angular.z = angle
         self.velocity.linear.x = speed
@@ -41,7 +41,7 @@ class Video_feed_in(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    image_subscriber = Video_feed_in()
+    image_subscriber = VideoFeedIn()
     rclpy.spin(image_subscriber)
     rclpy.shutdown()
 
