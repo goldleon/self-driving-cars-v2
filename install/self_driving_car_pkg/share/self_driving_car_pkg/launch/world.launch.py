@@ -6,8 +6,8 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    package_dir=get_package_share_directory('self_driving_car_pkg')
-    world_file=os.path.join(package_dir,'worlds','self_driving_car.world')
+    package_dir = get_package_share_directory('self_driving_car_pkg')
+    world_file = os.path.join(package_dir, 'worlds', 'self_driving_car.world')
 
     return LaunchDescription([
 

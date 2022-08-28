@@ -1,5 +1,5 @@
 [console_scripts]
-driver_node = self_driving_car_pkg.driver_node:main
-recorder_node = self_driving_car_pkg.video_recorder:main
-spawn_node = self_driving_car_pkg.self_driving_spawner:main
+computer_vision_node = self_driving_car_pkg.computer_vision_node:main
+spawner_node = self_driving_car_pkg.self_driving_spawner:main
+video_recording_node = self_driving_car_pkg.video_recorder:main
 

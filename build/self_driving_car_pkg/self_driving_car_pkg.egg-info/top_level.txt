@@ -1,1 +1,6 @@
 self_driving_car_pkg
+self_driving_car_pkg/Detection
+self_driving_car_pkg/Detection/Lanes
+self_driving_car_pkg/Detection/Signs
+self_driving_car_pkg/Detection/TrafficLights
+self_driving_car_pkg/config
