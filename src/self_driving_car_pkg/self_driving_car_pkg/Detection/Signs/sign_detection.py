@@ -98,7 +98,7 @@ def sign_det_n_track(gray, frame, frame_draw):
                         if (iter % 5) == 0:
                             saved_no = saved_no + 1
                             img_dir = os.path.abspath(
-                                "src/self_driving_car_pkg/self_driving_car_pkg/data/live_dataset") + class_id
+                                "src/self_driving_car_pkg/self_driving_car_pkg/data/dataset") + class_id
                             img_name = img_dir + "/" + str(saved_no) + ".png"
                             if not os.path.exists(img_dir):
                                 os.makedirs(img_dir)
