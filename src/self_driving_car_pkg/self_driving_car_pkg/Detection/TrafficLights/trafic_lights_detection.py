@@ -32,7 +32,7 @@ class TrafficLightStates:
         cv2.circle(img, (pt[0], pt[1]), 2, inner_color, 3)
 
     @staticmethod
-    def AreCircles_Intersecting(center, center_cmp, r1, r2):
+    def areCircles_Intersecting(center, center_cmp, r1, r2):
         x1, y1 = center
         x2, y2 = center_cmp
         dist_sq = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)
@@ -44,7 +44,7 @@ class TrafficLightStates:
         else:
             return 0
 
-    def Check_Color_Cmb(self, center, center_cmp):
+    def check_color_cmb(self, center, center_cmp):
         correct_color_comb = False
         a_hue = self.colour_segment.HLS[center[1] - 1, center[0] - 1, 0]
         b_hue = self.colour_segment.HLS[center_cmp[1] - 1, center_cmp[0] - 1, 0]
@@ -73,7 +73,7 @@ class TrafficLightStates:
                         if (c_hue > 28) and (c_hue < 32):
                             return True
                         else:
-                            # print("Mid is not yello")
+                            # print("Mid is not yellow")
                             return correct_color_comb
                     else:
                         # print("B is Red A is green")
@@ -113,7 +113,7 @@ class TrafficLightStates:
 
         return tl_update
 
-    def Confirm_TL_Nd_RetState(self, gray, frame_draw):
+    def confirm_tl_nd_ret_state(self, gray, frame_draw):
         frame_draw_special = frame_draw.copy()
         tl_update = config.UNKNOWN
 
@@ -146,9 +146,9 @@ class TrafficLightStates:
 
                         if ((point_dist > 10) and (point_dist < 80) and (abs(center[0] - center_cmp[0]) < 80) and
                                 (abs(center[1] - center_cmp[1]) < 5) and (abs(radius - radius_cmp) < 5) and
-                                (self.AreCircles_Intersecting(center, center_cmp, radius, radius_cmp) < 0)):
+                                (self.areCircles_Intersecting(center, center_cmp, radius, radius_cmp) < 0)):
 
-                            correct_color_comb = self.Check_Color_Cmb(center, center_cmp)
+                            correct_color_comb = self.check_color_cmb(center, center_cmp)
 
                             if correct_color_comb:
                                 # Confirmed Traffic Light -> Retrieve Current State [Stop,Wait,Go]
@@ -179,10 +179,10 @@ class TrafficLightStates:
         return self.traffic_state
 
     def check_TL_State(self, frame, frame_draw):
-        gray_yellow_red_regions = self.colour_segment.isolate_yelo_red_regions(frame)
+        gray_yellow_red_regions = self.colour_segment.isolate_yellow_red_regions(frame)
 
         # Localizing Potential Candidates and Classifying them in SignDetection
-        self.Confirm_TL_Nd_RetState(gray_yellow_red_regions, frame_draw)
+        self.confirm_tl_nd_ret_state(gray_yellow_red_regions, frame_draw)
 
 
 class CascadeDetector:
@@ -193,8 +193,8 @@ class CascadeDetector:
         self.TL_States = TrafficLightStates()
 
     # Class Variables
-    TrafficLight_cascade_str = os.path.join(os.getcwd(),
-                                            "src/self_driving_car_pkg/self_driving_car_pkg/data/TrafficLight_cascade.xml")
+    traffic_light_cascade_xml_path = "src/self_driving_car_pkg/self_driving_car_pkg/data/TrafficLight_cascade.xml"
+    TrafficLight_cascade_str = os.path.join(os.getcwd(), traffic_light_cascade_xml_path)
     TrafficLight_cascade = cv2.CascadeClassifier()
 
     # -- 1. Load the cascades
@@ -275,8 +275,8 @@ class TrafficLightsTracker(Tracker):
 
         return pts_src, pts_dst
 
-    def EstimateTrackedRect(self, pts_src, pts_dst, img_draw):
-        self.mode = "Tracking"
+    def estimateTrackedRect(self, pts_src, pts_dst, img_draw):
+        self.mode = config.TRACKING
 
         if len(pts_src) >= 3:
             # ===================================== Fetching strongest 4 points ======================================
@@ -332,6 +332,7 @@ class TrafficLightsTracker(Tracker):
 
         p1, st, _ = cv2.calcOpticalFlowPyrLK(self.old_gray, gray, self.p0, None, **self.lk_params)
 
+
         # 5a. If no flow, look for new points
         if (p1 is None) or (len(p1[st == 1]) < 3):
             # if p1 is None:
@@ -344,7 +345,7 @@ class TrafficLightsTracker(Tracker):
             good_new = p1[st == 1]
             good_old = self.p0[st == 1]
 
-            tracked_roi_mask = self.EstimateTrackedRect(good_old, good_new, frame_draw)
+            tracked_roi_mask = self.estimateTrackedRect(good_old, good_new, frame_draw)
 
             # Draw the tracks
             for i, (new, old) in enumerate(zip(good_new, good_old)):
