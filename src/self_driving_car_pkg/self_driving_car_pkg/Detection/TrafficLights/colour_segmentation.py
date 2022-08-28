@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-class colour_segment:
+class ColourSegment:
 
     def __init__(self):
         # Instance Variables
@@ -88,15 +88,15 @@ class colour_segment:
 
         return dst
 
-    def isolate_yellow_red_regions(self, frame):
+    def isolate_yelo_red_regions(self, frame):
         # 0. To be accessed in Script Functions without explicitly passing as an Argument
         self.src = frame.copy()
         # 1. Converting frame to HLS ColorSpace
         self.HLS = cv2.cvtColor(frame, cv2.COLOR_BGR2HLS)  # 2 msc
         # 2. Extracting Mask of Only Red And Color Regions
-        frame_roi = self.MaskExtract()
+        frame_ROI = self.MaskExtract()
 
         # 1. Cvt frame_ROI to grayscale
-        gray_regions_oi = cv2.cvtColor(frame_roi, cv2.COLOR_BGR2GRAY)
+        gray_regions_oi = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
 
         return gray_regions_oi

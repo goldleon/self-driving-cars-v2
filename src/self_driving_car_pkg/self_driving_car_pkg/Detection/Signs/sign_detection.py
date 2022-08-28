@@ -59,7 +59,7 @@ def sign_det_n_track(gray, frame, frame_draw):
                         # 4d. Display confirmed sign in green circle
                         cv2.circle(frame_draw, (i[0], i[1]), i[2], (0, 255, 0), 2)  # draw the outer circle
 
-                        match_found, match_idx = sign_tracker.MatchCurrCenter_ToKnown(center)
+                        match_found, match_idx = sign_tracker.match_current_center_to_known(center)
                         # 4f. If match found , Increment ... known centers confidence 
                         if match_found:
                             sign_tracker.known_centers_confidence[match_idx] += 1
@@ -135,4 +135,4 @@ def detect_signs(frame, frame_draw):
 
     sign_det_n_track(gray, frame, frame_draw)
 
-    return sign_tracker.mode, sign_tracker.Tracked_class
+    return sign_tracker.mode, sign_tracker.tracked_class

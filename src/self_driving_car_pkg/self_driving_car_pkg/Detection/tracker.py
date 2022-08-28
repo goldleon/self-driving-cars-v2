@@ -9,13 +9,13 @@ class Tracker:
         print("Initialized Object of signTracking class")
         # State Variables
         self.mode = "Detection"
-        self.Tracked_class = 0
+        self.tracked_class = 0
         # Proximity Variables
         self.known_centers = []
         self.known_centers_confidence = []
         self.known_centers_classes_confidence = []
         # Init Variables
-        self.old_gray = np.zeros((320, 240), 'uint8')
+        self.old_gray = 0
         self.p0 = []
         # Draw Variables
         self.mask = 0
@@ -26,32 +26,33 @@ class Tracker:
     feature_params = dict(maxCorners=100, qualityLevel=0.3, minDistance=7, blockSize=7)
     lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
 
-    def Distance(self, a, b):
+    @staticmethod
+    def distance(a, b):
         return math.sqrt(((float(a[1]) - float(b[1])) ** 2) + ((float(a[0]) - float(b[0])) ** 2))
 
-    def MatchCurrCenter_ToKnown(self, center):
+    def match_current_center_to_known(self, center):
         match_found = False
         match_idx = 0
         for i in range(len(self.known_centers)):
-            if (self.Distance(center, self.known_centers[i]) < self.max_allowed_dist):
+            if self.distance(center, self.known_centers[i]) < self.max_allowed_dist:
                 match_found = True
                 match_idx = i
                 return match_found, match_idx
         # If no match found as of yet return default values
         return match_found, match_idx
 
-    def init_tracker(self, label, gray, frame_draw, startP, endP, mask_to_track=None):
+    def init_tracker(self, label, gray, frame_draw, start_point, end_point, mask_to_track=None):
 
         if mask_to_track is None:
             sign_mask = np.zeros_like(gray)
-            sign_mask[startP[1]:endP[1], startP[0]:endP[0]] = 255
+            sign_mask[start_point[1]:end_point[1], start_point[0]:end_point[0]] = 255
             self.p0 = cv2.goodFeaturesToTrack(gray, mask=sign_mask, **self.feature_params)
         else:
             self.p0 = cv2.goodFeaturesToTrack(gray, mask=mask_to_track, **self.feature_params)
 
         if not config.Training_CNN:
             self.mode = "Tracking"
-        self.Tracked_class = label
+        self.tracked_class = label
         self.old_gray = gray
         self.mask = np.zeros_like(frame_draw)
 
@@ -63,7 +64,7 @@ class Tracker:
             # if p1 is None:
             self.mode = "Detection"
             self.mask = np.zeros_like(frame_draw)
-            self.Reset()
+            self.reset()
         # 5b. If flow , Extract good points ... Update SignTrack class
         else:
             # Select good points
@@ -80,10 +81,11 @@ class Tracker:
             self.old_gray = gray.copy()  # Update the previous frame and previous points
             self.p0 = good_new.reshape(-1, 1, 2)
 
-    def Reset(self):
+    def reset(self):
 
         self.known_centers = []
         self.known_centers_confidence = []
         self.known_centers_classes_confidence = []
         self.old_gray = 0
         self.p0 = []
+
