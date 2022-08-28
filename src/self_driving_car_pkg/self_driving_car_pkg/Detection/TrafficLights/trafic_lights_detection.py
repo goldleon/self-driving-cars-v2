@@ -221,7 +221,7 @@ class CascadeDetector:
             # Reconfirm if detected Traffic Light was the desired one
             self.traffic_lights_states.check_tl_state(img_ROI, img_draw)
             if self.traffic_lights_states.traffic_state != "Unknown":
-                print("Traffic State Recived = ", Traffic_State)
+                print("Traffic State Received = ", Traffic_State)
                 # Confirm Traffic Light
                 cv2.rectangle(img_draw, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 # Start Tracking
@@ -243,7 +243,7 @@ class TrafficLightsTracker(Tracker):
 
     def init_tracker(self, label, gray, frame_draw, start_point, end_point, mask_to_track=None):
         # Calling parents class init_tracker() using super()
-        super().init_tracker(label, gray, frame_draw, start_point, endP, mask_to_track=mask_to_track)
+        super().init_tracker(label, gray, frame_draw, start_point, end_point, mask_to_track=mask_to_track)
 
         # Resetting instance variables [ Mask to track ,
         #                                Car <==(Proximity)==> Traffic Light]
