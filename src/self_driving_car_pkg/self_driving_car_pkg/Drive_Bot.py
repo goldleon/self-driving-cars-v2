@@ -84,7 +84,7 @@ class Control:
                 self.frozen_angle = self.frozen_angle - 7
 
             # After a time period has passed [ De-Activate Left Turn + Reset Left Turn Variables ]
-            if self.left_turn_iterations == 150:
+            if self.left_turn_iterations == 170:
                 self.prev_mode_traffic_lights = "Detection"
                 self.activate_left_turn = False
                 self.left_turn_iterations = 0

@@ -114,7 +114,7 @@ class TrafficLightStates:
 
     def Confirm_TL_Nd_RetState(self, gray, frame_draw):
         frame_draw_special = frame_draw.copy()
-        TL_Update = "Unknown"
+        tl_update = "Unknown"
 
         # 2. Apply the HoughCircles to detect the circular regions in the Image
         NumOfVotesForCircle = 16  # parameter 1 MinVotes needed to be classified as circle
@@ -151,7 +151,7 @@ class TrafficLightStates:
 
                             if Correct_Color_Comb:
                                 # Confirmed Traffic Light -> Retrieve Current State [Stop,Wait,Go]
-                                TL_Update = self.get_state(center, center_cmp)
+                                tl_update = self.get_state(center, center_cmp)
 
                                 # Identify detected Red and Green Lights by drawing circles
                                 self.draw_circ_n_center(frame_draw_special, circle)
@@ -171,7 +171,7 @@ class TrafficLightStates:
 
             if self.traffic_state != self.prev_traffic_state:
                 print("#################TRAFFIC STATE CHANGED####################")
-                print("Traffic_State = ", self.traffic_state, " because ", TL_Update)
+                print("Traffic_State = ", self.traffic_state, " because ", tl_update)
 
             self.prev_traffic_state = self.traffic_state
 

@@ -58,13 +58,13 @@ def sign_det_n_track(gray, frame, frame_draw):
                         # 4d. Display confirmed sign in green circle
                         cv2.circle(frame_draw, (i[0], i[1]), i[2], (0, 255, 0), 2)  # draw the outer circle
 
-                        match_found, match_idx = sign_tracker.MatchCurrCenter_ToKnown(center)
+                        match_found, match_idx = sign_tracker.match_current_center_to_known(center)
                         # 4f. If match found , Increment ... known centers confidence
                         if match_found:
                             sign_tracker.known_centers_confidence[match_idx] += 1
                             sign_tracker.known_centers_classes_confidence[match_idx][sign_classes.index(sign)] += 1
                             # 4g. Check if same sign detected 3 times , If yes initialize OF Tracker
-                            if (sign_tracker.known_centers_confidence[match_idx] > 4):
+                            if sign_tracker.known_centers_confidence[match_idx] > 4:
                                 max_value = max(sign_tracker.known_centers_classes_confidence[match_idx])
                                 max_index = sign_tracker.known_centers_classes_confidence[match_idx].index(max_value)
                                 print("This sign we are about to track is most likely ( " + str(max_value),
