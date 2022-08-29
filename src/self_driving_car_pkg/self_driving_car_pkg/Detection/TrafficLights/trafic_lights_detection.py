@@ -112,7 +112,7 @@ class TrafficLightStates:
 
         return tl_update
 
-    def Confirm_TL_Nd_RetState(self, gray, frame_draw):
+    def confirm_tl_nd_ret_state(self, gray, frame_draw):
         frame_draw_special = frame_draw.copy()
         tl_update = "Unknown"
 
@@ -166,8 +166,8 @@ class TrafficLightStates:
                     if self.draw_all_detected:
                         self.draw_circ_n_center(frame_draw, circle, (255, 0, 255))
 
-                Traffic_State_STR = "Traffic State = " + self.traffic_state
-                cv2.putText(frame_draw, Traffic_State_STR, (20, 120), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 255, 255))
+                traffic_state_str = "Traffic State = " + self.traffic_state
+                cv2.putText(frame_draw, traffic_state_str, (20, 120), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 255, 255))
 
             if self.traffic_state != self.prev_traffic_state:
                 print("#################TRAFFIC STATE CHANGED####################")
@@ -178,10 +178,10 @@ class TrafficLightStates:
         return self.traffic_state
 
     def check_tl_state(self, frame, frame_draw):
-        gray_yellow_red_regions = self.colour_segmenter.isolate_yelo_red_regions(frame)
+        gray_yellow_red_regions = self.colour_segmenter.isolate_yellow_red_regions(frame)
 
         # Localizing Potential Candidates and Classifying them in SignDetection
-        self.Confirm_TL_Nd_RetState(gray_yellow_red_regions, frame_draw)
+        self.confirm_tl_nd_ret_state(gray_yellow_red_regions, frame_draw)
 
 
 class CascadeDetector:
@@ -204,8 +204,8 @@ class CascadeDetector:
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         traffic_light_confirmed = False
-        Traffic_State = "Unknown"
-        TL_Confirmed_mask = np.zeros_like(gray)
+        traffic_state = "Unknown"
+        tl_confirmed_mask = np.zeros_like(gray)
 
         target = self.traffic_light_cascade.detectMultiScale(img)
 
@@ -221,15 +221,15 @@ class CascadeDetector:
             # Reconfirm if detected Traffic Light was the desired one
             self.traffic_lights_states.check_tl_state(img_ROI, img_draw)
             if self.traffic_lights_states.traffic_state != "Unknown":
-                print("Traffic State Received = ", Traffic_State)
+                print("Traffic State Received = ", traffic_state)
                 # Confirm Traffic Light
                 cv2.rectangle(img_draw, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 # Start Tracking
                 traffic_light_confirmed = True
-                TL_Confirmed_mask = TL_Maybe_mask
+                tl_confirmed_mask = TL_Maybe_mask
                 break
 
-        return traffic_light_confirmed, TL_Confirmed_mask, Traffic_State, gray
+        return traffic_light_confirmed, tl_confirmed_mask, traffic_state, gray
 
 
 cascade_detector = CascadeDetector()

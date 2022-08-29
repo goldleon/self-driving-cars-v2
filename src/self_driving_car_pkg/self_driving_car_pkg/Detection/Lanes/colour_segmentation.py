@@ -36,8 +36,8 @@ def maskextract():
     mask_y_ = mask_y != 0
     dst_Y = src * (mask_y_[:, :, None].astype(src.dtype))
 
-    cv2.imshow("white_regions", dst)
-    cv2.imshow("yellow_regions", dst_Y)
+    #cv2.imshow("white_regions", dst)
+    #cv2.imshow("yellow_regions", dst_Y)
 
 
 def on_hue_low_change(val):
@@ -145,20 +145,20 @@ def segment_lanes(frame,min_area):
     global hls,src
     src = frame.copy()
 
-    hls = cv2.cvtColor(frame,cv2.COLOR_BGR2HLS)
+    hls = cv2.cvtColor(frame, cv2.COLOR_BGR2HLS)
 
     # Segmenting White regions
     white_regions = color_segment(hls,np.array([hue_l,ligth_l,saturation_l]),np.array([255,255,255]))
     yellow_regions = color_segment(hls,np.array([hue_l_y,ligth_l_y,saturation_l_y]),np.array([hue_h_y,255,255]))
 
-    cv2.imshow("white_regions",white_regions)
-    cv2.imshow("yellow_regions",yellow_regions)
-    cv2.waitKey(1)
+    #cv2.imshow("white_regions",white_regions)
+    #cv2.imshow("yellow_regions",yellow_regions)
+    #cv2.waitKey(1)
 
     # Semgneting midlane from white regions
-    mid_lane_mask,mid_lane_edge = segment_midlane(frame,white_regions,min_area)
+    mid_lane_mask, mid_lane_edge = segment_midlane(frame, white_regions, min_area)
 
     # Semgneting outerlane from yellow regions
-    outer_lane_edge,outerlane_side_sep,outerlane_points= segment_outerlane(frame,yellow_regions,min_area+500)        
+    outer_lane_edge, outerlane_side_sep, outerlane_points = segment_outerlane(frame, yellow_regions, min_area+500)
 
-    return mid_lane_mask,mid_lane_edge,outer_lane_edge,outerlane_side_sep,outerlane_points
+    return mid_lane_mask, mid_lane_edge, outer_lane_edge, outerlane_side_sep, outerlane_points

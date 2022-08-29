@@ -83,12 +83,12 @@ class ColourSegment:
 
         dst = self.src * (MASK_Binary[:, :, None].astype(self.src.dtype))
 
-        cv2.imshow("[TL_Config] mask", dst)
-        cv2.imshow("[TL_Config] mask_R", dst)
+        #cv2.imshow("[TL_Config] mask", dst)
+        #cv2.imshow("[TL_Config] mask_R", dst)
 
         return dst
 
-    def isolate_yelo_red_regions(self, frame):
+    def isolate_yellow_red_regions(self, frame):
         # 0. To be accessed in Script Functions without explicitly passing as an Argument
         self.src = frame.copy()
         # 1. Converting frame to HLS ColorSpace

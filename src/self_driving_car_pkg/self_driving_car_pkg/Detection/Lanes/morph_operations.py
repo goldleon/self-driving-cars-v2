@@ -131,7 +131,7 @@ def Ret_LowestEdgePoints(gray):
     # Boundary of the Contour is extracted and Saved in Thresh
 
     Top_Row, Bot_Row = FindExtremas(thresh)
-    cv2.imshow("thresh", thresh)
+    #cv2.imshow("thresh", thresh)
 
     Contour_TopBot_PortionCut = ROI_extracter(
         thresh, (0, Top_Row + 5), (thresh.shape[1], Bot_Row - 5)
