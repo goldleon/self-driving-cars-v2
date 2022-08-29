@@ -7,7 +7,7 @@ yellow_light_sdf=$HOME/.gazebo/models/yellow_light/model.sdf
 ros2 run self_driving_car_pkg spawner_node "$green_light_sdf" green_Light
 sleep 0.5s
 ros2 run self_driving_car_pkg spawner_node "$yellow_light_sdf" yellow_light
-sleep 1s
+sleep 0.75s
 ros2 run self_driving_car_pkg spawner_node "$red_light_sdf" red_light
 
 
