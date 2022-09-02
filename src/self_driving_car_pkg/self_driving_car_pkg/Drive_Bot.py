@@ -180,7 +180,7 @@ class Car:
 
         cv2.putText(frame_disp, str(direction_string), (20, 40), cv2.FONT_HERSHEY_DUPLEX, 0.4, color_direction, 1)
 
-        angle_speed_str = "[ Angle ,Speed ] = [ " + str(int(angle_of_car)) + "deg ," + str(int(current_speed)) + "mph ]"
+        angle_speed_str = "[ Angle ,Speed ] = [ " + str(int(angle_of_car)) + "deg ," + str(int(current_speed)) + "km/h ]"
         cv2.putText(frame_disp, str(angle_speed_str), (20, 20), cv2.FONT_HERSHEY_DUPLEX, 0.4, (0, 0, 255), 1)
 
         if tracked_class == "left_turn":
